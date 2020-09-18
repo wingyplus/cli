@@ -276,19 +276,19 @@ func PullRequests(client *Client, repo ghrepo.Interface, currentPRNumber int, cu
 		commits(last: 1) {
 			nodes {
 				commit {
-					statusCheckRollup {
-						contexts(last: 100) {
-							nodes {
-								...on StatusContext {
-									state
-								}
-								...on CheckRun {
-									conclusion
-									status
-								}
-							}
-						}
-					}
+					# statusCheckRollup {
+					# 	contexts(last: 100) {
+					# 		nodes {
+					# 			...on StatusContext {
+					# 				state
+					# 			}
+					# 			...on CheckRun {
+					# 				conclusion
+					# 				status
+					# 			}
+					# 		}
+					# 	}
+					# }
 				}
 			}
 		}
@@ -413,109 +413,110 @@ func PullRequestByNumber(client *Client, repo ghrepo.Interface, number int) (*Pu
 
 	query := `
 	query PullRequestByNumber($owner: String!, $repo: String!, $pr_number: Int!) {
-		repository(owner: $owner, name: $repo) {
-			pullRequest(number: $pr_number) {
-				id
-				url
-				number
-				title
-				state
-				closed
-				body
-				mergeable
-				author {
-				  login
-				}
-				commits(last: 1) {
-				  totalCount
-					nodes {
-						commit {
-              oid
-						  statusCheckRollup {
-						    contexts(last: 100) {
-						      nodes {
-						  		  ...on StatusContext {
-						  			  context
-						  				state
-											targetUrl
-						  			}
-						  			...on CheckRun {
-											name
-											status
-											conclusion
-											startedAt
-											completedAt
-											detailsUrl
-						  			}
-						  		}
-						  	}
-						  }
-            }
-          }
-				}
-				baseRefName
-				headRefName
-				headRepositoryOwner {
-					login
-				}
-				headRepository {
-					name
-				}
-				isCrossRepository
-				isDraft
-				maintainerCanModify
-				reviewRequests(first: 100) {
-					nodes {
-						requestedReviewer {
-							__typename
-							...on User {
-								login
-							}
-							...on Team {
-								name
-							}
-						}
-					}
-					totalCount
-				}
-				reviews(last: 100) {
-					nodes {
-						author {
-						  login
-						}
-						state
-					}
-					totalCount
-				}
-				assignees(first: 100) {
-					nodes {
-						login
-					}
-					totalCount
-				}
-				labels(first: 100) {
-					nodes {
-						name
-					}
-					totalCount
-				}
-				projectCards(first: 100) {
-					nodes {
-						project {
-							name
-						}
-						column {
-							name
-						}
-					}
-					totalCount
-				}
-				milestone{
-					title
-				}
-			}
-		}
-	}`
+	  repository(owner: $owner, name: $repo) {
+	    pullRequest(number: $pr_number) {
+	      id
+	      url
+	      number
+	      title
+	      state
+	      closed
+	      body
+	      mergeable
+	      author {
+	        login
+	      }
+	      commits(last: 1) {
+	        totalCount
+	        nodes {
+	          commit {
+	            oid
+	            # statusCheckRollup {
+	            #   contexts(last: 100) {
+	            #     nodes {
+	            #       ... on StatusContext {
+	            #         context
+	            #         state
+	            #         targetUrl
+	            #       }
+	            #       ... on CheckRun {
+	            #         name
+	            #         status
+	            #         conclusion
+	            #         startedAt
+	            #         completedAt
+	            #         detailsUrl
+	            #       }
+	            #     }
+	            #   }
+	            # }
+	          }
+	        }
+	      }
+	      baseRefName
+	      headRefName
+	      headRepositoryOwner {
+	        login
+	      }
+	      headRepository {
+	        name
+	      }
+	      isCrossRepository
+	      isDraft
+	      maintainerCanModify
+	      reviewRequests(first: 100) {
+	        nodes {
+	          requestedReviewer {
+	            __typename
+	            ... on User {
+	              login
+	            }
+	            ... on Team {
+	              name
+	            }
+	          }
+	        }
+	        totalCount
+	      }
+	      reviews(last: 100) {
+	        nodes {
+	          author {
+	            login
+	          }
+	          state
+	        }
+	        totalCount
+	      }
+	      assignees(first: 100) {
+	        nodes {
+	          login
+	        }
+	        totalCount
+	      }
+	      labels(first: 100) {
+	        nodes {
+	          name
+	        }
+	        totalCount
+	      }
+	      projectCards(first: 100) {
+	        nodes {
+	          project {
+	            name
+	          }
+	          column {
+	            name
+	          }
+	        }
+	        totalCount
+	      }
+	      milestone {
+	        title
+	      }
+	    }
+	  }
+	}
+	`
 
 	variables := map[string]interface{}{
 		"owner":     repo.RepoOwner(),
@@ -561,25 +562,25 @@ func PullRequestForBranch(client *Client, repo ghrepo.Interface, baseBranch, hea
 					  nodes {
 						  commit {
 							  oid
-								statusCheckRollup {
-								  contexts(last: 100) {
-								    nodes {
-										  ...on StatusContext {
-											  context
-												state
-											  targetUrl
-											}
-											...on CheckRun {
-												name
-												status
-												conclusion
-												startedAt
-												completedAt
-												detailsUrl
-											}
-										}
-									}
-								}
+								# statusCheckRollup {
+								#   contexts(last: 100) {
+								#     nodes {
+								# 		  ...on StatusContext {
+								# 			  context
+								# 				state
+								# 			  targetUrl
+								# 			}
+								# 			...on CheckRun {
+								# 				name
+								# 				status
+								# 				conclusion
+								# 				startedAt
+								# 				completedAt
+								# 				detailsUrl
+								# 			}
+								# 		}
+								# 	}
+								# }
 							}
 					  }
 					}
